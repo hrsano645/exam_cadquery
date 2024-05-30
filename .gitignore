@@ -160,3 +160,32 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+cadquery_examples/CQ examples.ipynb
+cadquery_examples/Ex001_Simple_Block.py
+cadquery_examples/Ex002_Block_With_Bored_Center_Hole.py
+cadquery_examples/Ex003_Pillow_Block_With_Counterbored_Holes.py
+cadquery_examples/Ex004_Extruded_Cylindrical_Plate.py
+cadquery_examples/Ex005_Extruded_Lines_and_Arcs.py
+cadquery_examples/Ex006_Moving_the_Current_Working_Point.py
+cadquery_examples/Ex007_Using_Point_Lists.py
+cadquery_examples/Ex008_Polygon_Creation.py
+cadquery_examples/Ex009_Polylines.py
+cadquery_examples/Ex010_Defining_an_Edge_with_a_Spline.py
+cadquery_examples/Ex011_Mirroring_Symmetric_Geometry.py
+cadquery_examples/Ex012_Creating_Workplanes_on_Faces.py
+cadquery_examples/Ex013_Locating_a_Workplane_on_a_Vertex.py
+cadquery_examples/Ex014_Offset_Workplanes.py
+cadquery_examples/Ex015_Rotated_Workplanes.py
+cadquery_examples/Ex016_Using_Construction_Geometry.py
+cadquery_examples/Ex017_Shelling_to_Create_Thin_Features.py
+cadquery_examples/Ex018_Making_Lofts.py
+cadquery_examples/Ex019_Counter_Sunk_Holes.py
+cadquery_examples/Ex020_Rounding_Corners_with_Fillets.py
+cadquery_examples/Ex021_Splitting_an_Object.py
+cadquery_examples/Ex022_Revolution.py
+cadquery_examples/Ex023_Sweep.py
+cadquery_examples/Ex024_Sweep_With_Multiple_Sections.py
+cadquery_examples/Ex025_Swept_Helix.py
+cadquery_examples/Ex026_Case_Seam_Lip.py
+cadquery_examples/Ex100_Lego_Brick.py
+cadquery_examples/Ex101_InterpPlate.py
