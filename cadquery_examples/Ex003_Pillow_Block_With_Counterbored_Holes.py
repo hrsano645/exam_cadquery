@@ -1,4 +1,5 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
 # These can be modified rather than hardcoding values for each dimension.
 length = 80.0  # Length of the block
@@ -41,4 +42,4 @@ result = (
 )
 
 # Displays the result of this script
-show_object(result)
+show_object(result, measure_tools=True)
