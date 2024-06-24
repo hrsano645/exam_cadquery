@@ -12,18 +12,15 @@ cbore_diameter = 4.4  # ボルトヘッドのポケット穴の直径
 cbore_depth = 2.1  # ボルトヘッドのポケット穴の深さ
 
 # 上記の寸法に基づいて3Dブロックを作成し、22mmの中央穴と4つのカウンターボアされたボルト穴を追加します。
-# 1. オブジェクトを構築できるワークプレーンを確立します。
-# 1a. XおよびYの原点を使用してワークプレーンを定義し、正のZ方向が「上」であり、負のZ方向が「下」であることを意味します。
-# 2. 最も高い（最大）のZ面が選択され、その上に新しいワークプレーンが作成されます。
-# 3. 新しいワークプレーンを使用してブロックを貫通する穴をドリルします。
-# 3a. 穴は自動的にワークプレーンの中心に配置されます。
-# 4. 最も高い（最大）のZ面が選択され、その上に新しいワークプレーンが作成されます。
-# 5. ブロックの全体的な寸法に基づいて、ワークプレーン上に構築用の長方形が作成されます。
-# 5a. 構築用オブジェクトは他のジオメトリを配置するためにのみ使用され、最終的に表示されるジオメトリには表示されません。
-# 6. 長方形の頂点（コーナー）が選択され、各頂点にカウンターボアされた穴が配置されます（4つすべての頂点に同時に）。
 result = (
     cq.Workplane("XY")
     .box(length, width, thickness)
+    # .edges("|Z")  # Z軸に平行なエッジを選択
+    # .fillet(8.0)  # フィレットの半径を5.0に設定
+    # .edges("|X")  # Z軸に平行なエッジを選択
+    # .fillet(2.0)  # フィレットの半径を5.0に設定
+    .edges()  # Z軸に平行なエッジを選択
+    .fillet(2.0)  # フィレットの半径を5.0に設定
     .faces(">Z")
     .workplane()
     .hole(center_hole_dia)
@@ -32,13 +29,32 @@ result = (
     .rect(length - cbore_inset, width - cbore_inset, forConstruction=True)
     .vertices()
     .cboreHole(cbore_hole_diameter, cbore_diameter, cbore_depth)
-    .edges("|Z")
-    .fillet(5.0)
 )
 
-# Displays the result of this script
+# 結果を表示します
 show_object(result, measure_tools=True)
 
-# forConstructionがいまいちわかってない: 補助ジオメトリはどこに配置されるのか。配置というよりは見えないけど配置されてるイメージ
-# verticesの意味が分かってない: 直訳すると頂点だがで、頂点のコーナーらしい
-# cboreHoleは？: カウンターボアされた穴を作成するメソッド。ボルトのシャンク/スレッドのクリアランス穴を作成するために使用される。
+# --- Claude 3.5 Sonnet からいろいろ変更したもの ---
+
+# フィレットを適用
+result2 = (
+    cq.Workplane("XY", (length + 10, 0, 0))
+    .box(length, width, thickness)
+    .edges("|Z")  # Z軸に平行なエッジを選択
+    .fillet(5.0)  # フィレットの半径を5.0に設定
+    .edges("|X")  # X軸またはY軸に平行なエッジを選択
+    .fillet(2.0)  # フィレットの半径を2.0に設定
+    # 中央の穴を開ける
+    .faces(">Z")
+    .workplane()
+    .hole(center_hole_dia)
+    # カウンターボア穴を追加
+    .faces(">Z")
+    .workplane()
+    .rect(length - cbore_inset, width - cbore_inset, forConstruction=True)
+    .vertices()
+    .cboreHole(cbore_hole_diameter, cbore_diameter, cbore_depth)
+)
+
+# 結果の表示
+show_object(result2, measure_tools=True)
