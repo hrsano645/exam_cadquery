@@ -1,20 +1,18 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# 1.  Establishes a workplane that an object can be built on.
-# 1a. Uses the named plane orientation "front" to define the workplane, meaning
-#     that the positive Z direction is "up", and the negative Z direction
-#     is "down".
-# 2.  A horizontal line is drawn on the workplane with the hLine function.
-# 2a. 1.0 is the distance, not coordinate. hLineTo allows using xCoordinate
-#     not distance.
+# 1.  オブジェクトを構築するための作業平面を確立します。
+# 1a. "front"という名前の平面方向を使用して作業平面を定義します。
+#     これは、正のZ方向が"上"であり、負のZ方向が"下"であることを意味します。
+# 2.  hLine関数を使用して作業平面上に水平線を引きます。
+# 2a. 1.0は距離ではなく座標です。hLineToを使用すると、x座標を使用できます。
 r = cq.Workplane("front").hLine(1.0)
 
-# 3.  Draw a series of vertical and horizontal lines with the vLine and hLine
-#     functions.
+# 3.  vLineとhLine関数を使用して、垂直線と水平線のシリーズを描画します。
 r = r.vLine(0.5).hLine(-0.25).vLine(-0.25).hLineTo(0.0)
 
-# 4.  Mirror the geometry about the Y axis and extrude it into a 3D object.
+# 4.  Y軸を中心にジオメトリをミラーリングし、3Dオブジェクトに押し出します。
 result = r.mirrorY().extrude(0.25)
 
-# Displays the result of this script
+# このスクリプトの結果を表示します
 show_object(result)

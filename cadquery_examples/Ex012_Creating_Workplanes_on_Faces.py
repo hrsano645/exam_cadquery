@@ -1,16 +1,16 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# 1.  Establishes a workplane that an object can be built on.
-# 1a. Uses the named plane orientation "front" to define the workplane, meaning
-#     that the positive Z direction is "up", and the negative Z direction
-#     is "down".
-# 2.  Creates a 3D box that will have a hole placed in it later.
+# 1. オブジェクトを構築するためのワークプレーンを設定します。
+# 1a. "front" という名前の平面方向を使用してワークプレーンを定義します。
+#     これは、正のZ方向が "上" であり、負のZ方向が "下" であることを意味します。
+# 2. 後で穴が配置される3Dボックスを作成します。
 result = cq.Workplane("front").box(2, 3, 0.5)
 
-# 3.  Find the top-most face with the >Z max selector.
-# 3a. Establish a new workplane to build geometry on.
-# 3b.  Create a hole down into the box.
+# 3. >Z max セレクターを使用して最も上の面を見つけます。
+# 3a. 新しいワークプレーンを設定してジオメトリを構築します。
+# 3b. ボックスに穴を作成します。
 result = result.faces(">Z").workplane().hole(0.5)
 
-# Displays the result of this script
+# このスクリプトの結果を表示します。
 show_object(result)
