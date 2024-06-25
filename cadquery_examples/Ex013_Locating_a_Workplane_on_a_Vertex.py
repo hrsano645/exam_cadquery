@@ -11,7 +11,7 @@ result = cq.Workplane("front").box(3, 2, 0.5)
 # 3a. >Zセレクタを使用して最も上のZ面を選択します。
 # 3b. <XYセレクタを使用して面の左下の頂点を選択します。
 # 3c. 頂点上に新しいワークプレーンを作成して将来のジオメトリを構築します。
-result = result.faces(">Z").vertices(">XY").workplane(centerOption="CenterOfMass")
+result = result.faces(">Z").vertices("<XY").workplane(centerOption="CenterOfMass")
 
 # 4.  選択した頂点を中心とする円を描きます。
 # 4a. 円はボックスを通して切り抜かれ、角が取り除かれます。
