@@ -1,35 +1,35 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# These can be modified rather than hardcoding values for each dimension.
-circle_radius = 3.0  # The outside radius of the plate
-thickness = 0.25  # The thickness of the plate
+# 各次元の値をハードコーディングする代わりに、これらを変更できます。
+circle_radius = 3.0  # プレートの外側の半径
+thickness = 0.25  # プレートの厚さ
 
-# Make a plate with two cutouts in it by moving the workplane center point
-# 1.  Establishes a workplane that an object can be built on.
-# 1a. Uses the named plane orientation "front" to define the workplane, meaning
-#     that the positive Z direction is "up", and the negative Z direction
-#     is "down".
-# 1b. The initial workplane center point is the center of the circle, at (0,0).
-# 2.  A circle is created at the center of the workplane
-# 2a. Notice that circle() takes a radius and not a diameter
+# ワークプレーンの中心点を移動することで、2つの切り抜きを持つプレートを作成します。
+# 1. オブジェクトを構築できるワークプレーンを確立します。
+# 1a. ワークプレーンの向きとして "front" を使用し、正の Z 方向が "上"、負の Z 方向が "下" であることを定義します。
+# 1b. 初期のワークプレーンの中心点は、円の中心である (0,0) です。
+# 2. ワークプレーンの中心に円を作成します。
+# 2a. circle() は半径を取ることに注意してください。
 result = cq.Workplane("front").circle(circle_radius)
 
-# 3.  The work center is movide to (1.5, 0.0) by calling center().
-# 3a. The new center is specified relative to the previous center,not
-#     relative to global coordinates.
-# 4.  A 0.5mm x 0.5mm 2D square is drawn inside the circle.
-# 4a. The plate has not been extruded yet, only 2D geometry is being created.
+# 3. center() を呼び出すことで、ワークプレーンの中心を (1.5, 0.0) に移動します。
+# 3a. 新しい中心は、前の中心に対して相対的に指定されます。グローバル座標ではありません。
+# 4. 円の内側に 0.5mm x 0.5mm の2D正方形を描画します。
+# 4a. プレートはまだ押し出されていません。2Dジオメトリのみが作成されています。
 result = result.center(1.5, 0.0).rect(0.5, 0.5)
 
-# 5.  The work center is moved again, this time to (-1.5, 1.5).
-# 6.  A 2D circle is created at that new center with a radius of 0.25mm.
+# 5. 中心を再び移動し、今度は (-1.5, 1.5) に移動します。
+# 6. その新しい中心に半径 0.25mm の2D円を作成します。
 result = result.center(-1.5, 1.5).circle(0.25)
 
-# 7.  All 2D geometry is extruded to the specified thickness of the plate.
-# 7a. The small circle and the square are enclosed in the outer circle of the
-#      plate and so it is assumed that we want them to be cut out of the plate.
-#      A separate cut operation is not needed.
+# この概念で中央を移動しようとした時、前回までの中心を基準に相対的に移動させる必要がある。
+result = result.center(-1.5, -1.5).circle(0.25)
+result = result.center(1.5, -1.5).circle(0.25)
+
+# 7. すべての2Dジオメトリをプレートの指定された厚さに押し出します。
+# 7a. 小さな円と正方形はプレートの外側の円に囲まれているため、プレートから切り抜かれることが想定されます。別個の切り抜き操作は必要ありません。
 result = result.extrude(thickness)
 
-# Displays the result of this script
+# このスクリプトの結果を表示します。
 show_object(result)

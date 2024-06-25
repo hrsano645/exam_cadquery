@@ -1,32 +1,31 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# These can be modified rather than hardcoding values for each dimension.
-plate_radius = 2.0  # The radius of the plate that will be extruded
-hole_pattern_radius = 0.25  # Radius of circle where the holes will be placed
-thickness = 0.125  # The thickness of the plate that will be extruded
-
-# Make a plate with 4 holes in it at various points in a polar arrangement from
-# the center of the workplane.
-# 1.  Establishes a workplane that an object can be built on.
-# 1a. Uses the named plane orientation "front" to define the workplane, meaning
-#     that the positive Z direction is "up", and the negative Z direction
-#     is "down".
-# 2.  A 2D circle is drawn that will become though outer profile of the plate.
+# これらは各寸法の値をハードコーディングする代わりに変更できます。
+plate_radius = 2.0  # 押し出されるプレートの半径
+hole_pattern_radius = 0.25  # 穴が配置される円の半径
+thickness = 0.125  # 押し出されるプレートの厚さ
+# ワークプレーンの中心から極座標配置でプレートに4つの穴を持つプレートを作成します。
+# 1. オブジェクトを構築できるワークプレーンを確立します。
+# 1a. ワークプレーンを定義するために名前付きの平面方向「front」を使用します。つまり、
+#     正のZ方向が「上」であり、負のZ方向が「下」であることを意味します。
 r = cq.Workplane("front").circle(plate_radius)
 
-# 3. Push 4 points on the stack that will be used as the center points of the
-#    holes.
+# 3. 穴の中心点として使用される4つのポイントをスタックにプッシュします。
 r = r.pushPoints([(1.5, 0), (0, 1.5), (-1.5, 0), (0, -1.5)])
 
-# 4. This circle() call will operate on all four points, putting a circle at
-#    each one.
+# 4. このcircle()呼び出しは、すべての4つのポイントに対して動作し、それぞれに円を配置します。
 r = r.circle(hole_pattern_radius)
 
-# 5.  All 2D geometry is extruded to the specified thickness of the plate.
-# 5a. The small hole circles are enclosed in the outer circle of the plate and
-#     so it is assumed that we want them to be cut out of the plate.  A
-#     separate cut operation is not needed.
+
+# ポイントをさらに追加して穴を開けることもできる
+r = r.pushPoints([(1, 1), (1, -1), (-1, 1), (-1, -1)])
+r = r.circle(hole_pattern_radius)
+
+
+# 5. すべての2Dジオメトリはプレートの指定された厚さに押し出されます。
+# 5a. 小さな穴の円はプレートの外側の円に含まれているため、プレートから切り抜かれることを想定しています。別個の切り抜き操作は必要ありません。
 result = r.extrude(thickness)
 
-# Displays the result of this script
+# このスクリプトの結果を表示します
 show_object(result)

@@ -1,10 +1,11 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# These can be modified rather than hardcoding values for each dimension.
-# Define up our Length, Height, Width, and thickness of the beam
+# 各次元の値をハードコーディングする代わりに、これらを変更できます。
+# ビームの長さ、高さ、幅、厚さを定義します
 (L, H, W, t) = (100.0, 20.0, 20.0, 1.0)
 
-# Define the points that the polyline will be drawn to/thru
+# ポリラインが描かれる点を定義します
 pts = [
     (0, H / 2.0),
     (W / 2.0, H / 2.0),
@@ -16,22 +17,21 @@ pts = [
     (0, H / -2.0),
 ]
 
-# We generate half of the I-beam outline and then mirror it to create the full
-# I-beam.
-# 1.  Establishes a workplane that an object can be built on.
-# 1a. Uses the named plane orientation "front" to define the workplane, meaning
-#     that the positive Z direction is "up", and the negative Z direction
-#     is "down".
-# 2.  moveTo() is used to move the first point from the origin (0, 0) to
-#     (0, 10.0), with 10.0 being half the height (H/2.0). If this is not done
-#     the first line will start from the origin, creating an extra segment that
-#     will cause the extrude to have an invalid shape.
-# 3.  The polyline function takes a list of points and generates the lines
-#     through all the points at once.
-# 3.  Only half of the I-beam profile has been drawn so far. That half is
-#     mirrored around the Y-axis to create the complete I-beam profile.
-# 4.  The I-beam profile is extruded to the final length of the beam.
+# 半分のIビームの輪郭を生成し、それをミラーリングして完全なIビームを作成します。
+# 1. オブジェクトを構築できる作業平面を確立します。
+# 1a. 作業平面を定義するために、名前付き平面の向き「front」を使用します。
+#     これにより、正のZ方向が「上」であり、負のZ方向が「下」であることがわかります。
+# 2. moveTo()は最初の点を原点(0, 0)から(H/2.0)を半分にした位置(0, 10.0)に移動します。
+#     これを行わないと、最初の線が原点から始まり、無効な形状の押し出しが発生する余分なセグメントが作成されます。
+# 3. ポリライン関数は、すべての点を通過する線を一度に生成します。
+# 3. Iビームのプロファイルの半分しか描かれていません。その半分はY軸を中心にミラーリングされ、完全なIビームのプロファイルが作成されます。
+# 4. Iビームのプロファイルは、ビームの最終的な長さに押し出されます。
+
+# polylineで線を作ってから、ミラーをすることでちゃんと線が閉じる形状になるってことか。
+result = cq.Workplane("front").polyline(pts)
+show_object(result)
+
 result = cq.Workplane("front").polyline(pts).mirrorY().extrude(L)
 
-# Displays the result of this script
+# このスクリプトの結果を表示します
 show_object(result)

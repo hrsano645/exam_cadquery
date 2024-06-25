@@ -1,42 +1,39 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# These can be modified rather than hardcoding values for each dimension.
-width = 3.0  # The width of the plate
-height = 4.0  # The height of the plate
-thickness = 0.25  # The thickness of the plate
-polygon_sides = 6  # The number of sides that the polygonal holes should have
-polygon_dia = 1.0  # The diameter of the circle enclosing the polygon points
 
-# Create a plate with two polygons cut through it
-# 1.  Establishes a workplane that an object can be built on.
-# 1a. Uses the named plane orientation "front" to define the workplane, meaning
-#     that the positive Z direction is "up", and the negative Z direction
-#     is "down".
-# 2.  A 3D box is created in one box() operation to represent the plate.
-# 2a. The box is centered around the origin, which creates a result that may
-#     be unituitive when the polygon cuts are made.
-# 3.  2 points are pushed onto the stack and will be used as centers for the
-#     polygonal holes.
-# 4.  The two polygons are created, on for each point, with one call to
-#     polygon() using the number of sides and the circle that bounds the
-#     polygon.
-# 5.  The polygons are cut thru all objects that are in the line of extrusion.
-# 5a. A face was not selected, and so the polygons are created on the
-#     workplane. Since the box was centered around the origin, the polygons end
-#     up being in the center of the box. This makes them cut from the center to
-#     the outside along the normal (positive direction).
-# 6.  The polygons are cut through all objects, starting at the center of the
-#     box/plate and going "downward" (opposite of normal) direction. Functions
-#     like cutBlind() assume a positive cut direction, but cutThruAll() assumes
-#     instead that the cut is made from a max direction and cuts downward from
-#     that max through all objects.
-result = (
-    cq.Workplane("front")
-    .box(width, height, thickness)
-    .pushPoints([(0, 0.75), (0, -0.75)])
-    .polygon(polygon_sides, polygon_dia)
-    .cutThruAll()
-)
+# 各寸法の値をハードコーディングする代わりに、これらを変更できます。
+width = 3.0  # プレートの幅
+height = 4.0  # プレートの高さ
+thickness = 0.25  # プレートの厚さ
+polygon_sides = 6  # ポリゴンの辺の数
+polygon_dia = 1.0  # ポリゴンの頂点を囲む円の直径
 
-# Displays the result of this script
-show_object(result)
+# 2つのポリゴンを切り抜いたプレートを作成します
+# 1. オブジェクトを構築するための作業平面を確立します。
+# 1a. "front"という名前の平面方向を使用して作業平面を定義します。これは、
+#     正のZ方向が「上」であり、負のZ方向が「下」であることを意味します。
+# 2. 1つのbox（）操作でプレートを表す3Dボックスを作成します。
+# 2a. ボックスは原点を中心に配置され、ポリゴンの切り抜きが行われるときに直感的でない結果が生じる可能性があります。
+# 3. スタックに2つのポイントをプッシュし、ポリゴンの穴の中心として使用します。
+# 4. ポリゴンは、辺の数とポリゴンを囲む円を使用して、各ポイントごとに1つずつ作成されます。
+# 5. ポリゴンは、押し出しのライン上にあるすべてのオブジェクトを切り抜きます。
+# 5a. フェースは選択されていないため、ポリゴンは作業平面上に作成されます。
+#     ボックスが原点を中心に配置されているため、ポリゴンはボックスの中心になります。
+#     これにより、ポリゴンは中心から外側に向かって正の方向に切り抜かれます。
+# 6. ポリゴンは、ボックス/プレートの中心から「下方向」（法線の逆方向）に向かって切り抜かれます。
+#     cutBlind（）などの関数は正の切り抜き方向を想定していますが、cutThruAll（）は切り抜きが最大方向から始まり、
+#     その最大方向から下方向に向かってすべてのオブジェクトを切り抜くことを想定しています。
+result = cq.Workplane("front").box(width, height, thickness)
+
+show_object(result, "box")
+
+result = result.pushPoints([(0, 0.75), (0, -0.75)]).polygon(polygon_sides, polygon_dia)
+
+# このスクリプトの結果を表示します
+show_object(result, "polycon")
+
+result = result.cutThruAll()
+
+# このスクリプトの結果を表示します
+show_object(result, "all")
