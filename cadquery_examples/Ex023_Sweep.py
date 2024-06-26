@@ -1,36 +1,43 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# Points we will use to create spline and polyline paths to sweep over
-pts = [(0, 1), (1, 2), (2, 4)]
+# スイープするためのスプラインとポリラインパスに使用するポイント
+pts = [(0, 1), (1, 2), (2, 4), (4, 16)]
 
-# Spline path generated from our list of points (tuples)
-path = cq.Workplane("XZ").spline(pts)
+# ポイントのリストから生成されたスプラインパス
+path_default = cq.Workplane("XZ").spline(pts)
 
-# Sweep a circle with a diameter of 1.0 units along the spline path we just created
-defaultSweep = cq.Workplane("XY").circle(1.0).sweep(path)
+# 直径1.0の円をスプラインパスに沿ってスイープする
+defaultSweep = cq.Workplane("XY").circle(1.0).sweep(path_default)
 
-# Sweep defaults to making a solid and not generating a Frenet solid. Setting Frenet to True helps prevent creep in
-# the orientation of the profile as it is being swept
-frenetShell = cq.Workplane("XY").circle(1.0).sweep(path, makeSolid=True, isFrenet=True)
+# スイープはデフォルトでソリッドを作成し、Frenetソリッドを生成しません。FrenetをTrueに設定すると、プロファイルの向きのクリープを防ぐのに役立ちます
+frenetShell = (
+    cq.Workplane("XY").circle(1.0).sweep(path_default, makeSolid=True, isFrenet=True)
+)
 
-# We can sweep shapes other than circles
-defaultRect = cq.Workplane("XY").rect(1.0, 1.0).sweep(path)
+# 円以外の形状もスイープできます
+defaultRect = cq.Workplane("XY").rect(1.0, 1.0).sweep(path_default)
 
-# Switch to a polyline path, but have it use the same points as the spline
-path = cq.Workplane("XZ").polyline(pts, includeCurrent=True)
+# ポリラインパスに切り替えますが、スプラインと同じポイントを使用します
+path_pline = cq.Workplane("XZ").polyline(pts, includeCurrent=True)
 
-# Using a polyline path leads to the resulting solid having segments rather than a single swept outer face
-plineSweep = cq.Workplane("XY").circle(1.0).sweep(path)
+# ポリラインパスを使用すると、結果のソリッドは単一のスイープ外側面ではなく、セグメントを持ちます
+plineSweep = cq.Workplane("XY").circle(1.0).sweep(path_pline)
 
-# Switch to an arc for the path
-path = cq.Workplane("XZ").threePointArc((1.0, 1.5), (0.0, 1.0))
+# パスにアークを使用します
+path_arc = cq.Workplane("XZ").threePointArc((1.0, 1.5), (0.0, 1.0))
 
-# Use a smaller circle section so that the resulting solid looks a little nicer
-arcSweep = cq.Workplane("XY").circle(0.5).sweep(path)
+# 外観を少し見栄え良くするために、より小さな円セクションを使用します
+arcSweep = cq.Workplane("XY").circle(1.0).sweep(path_arc)
 
-# Translate the resulting solids so that they do not overlap and display them left to right
-show_object(defaultSweep)
-show_object(frenetShell.translate((5, 0, 0)))
-show_object(defaultRect.translate((10, 0, 0)))
-show_object(plineSweep)
-show_object(arcSweep.translate((20, 0, 0)))
+# 結果のソリッドを重ならないように変換し、左から右に表示します
+show_object(path_default.translate((0, 0, -1)), name="path_default")
+show_object(defaultSweep, name="defaultSweep")
+show_object(path_default.translate((5, 0, -1)), name="path_default1")
+show_object(frenetShell.translate((5, 0, 0)), name="frenetShell")
+show_object(path_default.translate((10, 0, -1)), name="path_default2")
+show_object(defaultRect.translate((10, 0, 0)), name="defaultRect")
+show_object(path_pline.translate((15, 0, 0)), name="path_pline")
+show_object(plineSweep.translate((15, 0, 0)), name="plineSweep")
+show_object(path_arc.translate((20, 0, 0)), name="path_arc")
+show_object(arcSweep.translate((20, 0, 0)), name="arcSweep")
