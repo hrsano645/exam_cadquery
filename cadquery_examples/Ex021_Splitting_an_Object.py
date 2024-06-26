@@ -1,24 +1,20 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# Create a simple block with a hole through it that we can split.
-# 1.  Establishes a workplane that an object can be built on.
-# 1a. Uses the X and Y origins to define the workplane, meaning that the
-#     positive Z direction is "up", and the negative Z direction is "down".
-# 2.  Creates a plain box to base future geometry on with the box() function.
-# 3.  Selects the top-most face of the box and establishes a workplane on it
-#     that new geometry can be built on.
-# 4.  Draws a 2D circle on the new workplane and then uses it to cut a hole
-#     all the way through the box.
+# オブジェクトを分割するための穴のあるシンプルなブロックを作成します。
+# 1. オブジェクトを構築するための作業平面を確立します。
+# 1a. XおよびYの原点を使用して作業平面を定義し、正のZ方向が「上」であり、負のZ方向が「下」であることを意味します。
+# 2. box()関数を使用して将来のジオメトリの基礎となる単純なボックスを作成します。
+# 3. ボックスの最上部の面を選択し、新しいジオメトリを構築するための作業平面を確立します。
+# 4. 新しい作業平面上に2Dの円を描き、それを使用してボックス全体に穴を切ります。
 c = cq.Workplane("XY").box(1, 1, 1).faces(">Z").workplane().circle(0.25).cutThruAll()
+show_object(c, name="c")
 
-# 5.  Selects the face furthest away from the origin in the +Y axis direction.
-# 6.  Creates an offset workplane that is set in the center of the object.
-# 6a. One possible improvement to this script would be to make the dimensions
-#     of the box variables, and then divide the Y-axis dimension by 2.0 and
-#     use that to create the offset workplane.
-# 7.  Uses the embedded workplane to split the object, keeping only the "top"
-#     portion.
+# 5. +Y軸方向の原点から最も遠い面を選択します。
+# 6. オブジェクトの中心に設定されたオフセット作業平面を作成します。
+# 6a. このスクリプトの1つの改善点は、ボックスの寸法を変数にし、Y軸の寸法を2.0で割り、それを使用してオフセット作業平面を作成することです。
+# 7. 埋め込まれた作業平面を使用してオブジェクトを分割し、"上部"の部分のみを保持します。
 result = c.faces(">Y").workplane(-0.5).split(keepTop=True)
 
-# Displays the result of this script
-show_object(result)
+# このスクリプトの結果を表示します
+show_object(result, name="result")

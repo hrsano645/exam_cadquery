@@ -1,12 +1,12 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# Create a plate with 4 rounded corners in the Z-axis.
-# 1.  Establishes a workplane that an object can be built on.
-# 1a. Uses the X and Y origins to define the workplane, meaning that the
-#     positive Z direction is "up", and the negative Z direction is "down".
-# 2.  Creates a plain box to base future geometry on with the box() function.
-# 3.  Selects all edges that are parallel to the Z axis.
-# 4.  Creates fillets on each of the selected edges with the specified radius.
+# Z軸に4つの角を丸めたプレートを作成します。
+# 1. オブジェクトを構築するためのワークプレーンを確立します。
+# 1a. XとYの原点を使用してワークプレーンを定義し、正のZ方向が「上」であり、負のZ方向が「下」であることを意味します。
+# 2. 未来のジオメトリの基盤となる単純なボックスをbox()関数で作成します。
+# 3. Z軸に平行なすべてのエッジを選択します。
+# 4. 指定された半径で選択された各エッジにフィレットを作成します。
 result = cq.Workplane("XY").box(3, 3, 0.5).edges("|Z").fillet(0.125)
 
 # Displays the result of this script

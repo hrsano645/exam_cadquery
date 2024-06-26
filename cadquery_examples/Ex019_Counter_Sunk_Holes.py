@@ -1,16 +1,13 @@
 import cadquery as cq
+from ocp_vscode import show_object
 
-# Create a plate with 4 counter-sunk holes in it.
-# 1.  Establishes a workplane using an XY object instead of a named plane.
-# 2.  Creates a plain box to base future geometry on with the box() function.
-# 3.  Selects the top-most face of the box and established a workplane on that.
-# 4.  Draws a for-construction rectangle on the workplane which only exists for
-#     placing other geometry.
-# 5.  Selects the corner vertices of the rectangle and places a counter-sink
-#     hole, using each vertex as the center of a hole using the cskHole()
-#     function.
-# 5a. When the depth of the counter-sink hole is set to None, the hole will be
-#     cut through.
+# 4つのカウンターシンク穴があるプレートを作成します。
+# 1. 名前付きの平面ではなく、XYオブジェクトを使用してワークプレーンを確立します。
+# 2. ボックス()関数を使用して、将来のジオメトリの基礎となる単純なボックスを作成します。
+# 3. ボックスの一番上の面を選択し、その上にワークプレーンを確立します。
+# 4. ワークプレーン上に、他のジオメトリを配置するための構築用の長方形を描画します。
+# 5. 長方形の角の頂点を選択し、cskHole()関数を使用して、各頂点を穴の中心としてカウンターシンク穴を配置します。
+# 5a. カウンターシンク穴の深さをNoneに設定すると、穴が完全に切り抜かれます。
 result = (
     cq.Workplane(cq.Plane.XY())
     .box(4, 2, 0.5)
@@ -21,5 +18,5 @@ result = (
     .cskHole(0.125, 0.25, 82.0, depth=None)
 )
 
-# Displays the result of this script
+# このスクリプトの結果を表示します
 show_object(result)
