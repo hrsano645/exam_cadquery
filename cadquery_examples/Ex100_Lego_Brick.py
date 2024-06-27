@@ -1,5 +1,6 @@
 # This script can create any regular rectangular Lego(TM) Brick
 import cadquery as cq
+from ocp_vscode import show_object
 
 #####
 # Inputs
