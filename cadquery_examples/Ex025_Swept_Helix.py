@@ -20,3 +20,15 @@ result = (
 )
 
 show_object(result)
+
+# スイープした2D図形を表示する
+
+result2 = (
+    cq.Workplane("XZ")  # ヘリックスはZ軸方向に移動する
+    .center(r, 0)  # 等脚台形のオフセット
+    .polyline(((-0.15, 0.1), (0.0, 0.05), (0, 0.35), (-0.15, 0.3)))
+    .close()  # エッジをワイヤにする
+    .extrude(0.5)  # ワイヤを3D形状にする
+)
+
+show_object(result2)
