@@ -1,16 +1,17 @@
-# This script can create any regular rectangular Lego(TM) Brick
 import cadquery as cq
 from ocp_vscode import show_object
 
+# このスクリプトは、任意の正方形のレゴ(TM)ブロックを作成することができます
+
 #####
-# Inputs
+# 入力
 ######
-lbumps = 1  # number of bumps long
-wbumps = 1  # number of bumps wide
-thin = True  # True for thin, False for thick
+lbumps = 1  # ブロックの長さ方向の突起の数
+wbumps = 1  # ブロックの幅方向の突起の数
+thin = True  # Trueなら薄型、Falseなら厚型
 
 #
-# Lego Brick Constants-- these make a lego brick a lego :)
+# レゴブロックの定数--これによってレゴブロックがレゴブロックになります :)
 #
 pitch = 8.0
 clearance = 0.1
@@ -22,17 +23,17 @@ else:
     height = 9.6
 
 t = (pitch - (2 * clearance) - bumpDiam) / 2.0
-postDiam = pitch - t  # works out to 6.5
+postDiam = pitch - t  # 6.5になります
 total_length = lbumps * pitch - 2.0 * clearance
 total_width = wbumps * pitch - 2.0 * clearance
 
-# make the base
+# ベースを作成する
 s = cq.Workplane("XY").box(total_length, total_width, height)
 
-# shell inwards not outwards
+# 内側にシェルを作成する
 s = s.faces("<Z").shell(-1.0 * t)
 
-# make the bumps on the top
+# 上部に突起を作成する
 s = (
     s.faces(">Z")
     .workplane()
@@ -41,8 +42,8 @@ s = (
     .extrude(bumpHeight)
 )
 
-# add posts on the bottom. posts are different diameter depending on geometry
-# solid studs for 1 bump, tubes for multiple, none for 1x1
+# 底部にポストを追加する。ジオメトリによってポストの直径が異なります
+# 1つの突起の場合はソリッドスタッド、複数の突起の場合はチューブ、1x1の場合はなし
 tmp = s.faces("<Z").workplane(invert=True)
 
 if lbumps > 1 and wbumps > 1:
@@ -67,5 +68,5 @@ elif wbumps > 1:
 else:
     tmp = s
 
-# Render the solid
+# ソリッドをレンダリングする
 show_object(tmp)
