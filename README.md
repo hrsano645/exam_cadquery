@@ -9,7 +9,7 @@
 * Win: venv + pipで用意可能です
 * mac(aarch64, MシリーズCPU): conda環境が必要です
   * TODO:2024-06-27 依存環境のocp_cadqueryパッケージはmac+aarch64に対応したものがあるらしいので、直接pipでインストールすればできるかも
-  -> <https://github.com/CadQuery/OCP/issues/68>
+  -> <https://github.com/CadQuery/cadquery/issues/891>
 
 ## ファイル構成
 
