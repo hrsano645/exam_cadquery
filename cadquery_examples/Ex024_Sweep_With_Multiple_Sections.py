@@ -1,10 +1,11 @@
 import cadquery as cq
 from ocp_vscode import show_object
 
-# X axis line length 20.0
+# X軸に長さ20.0の直線を作成
 path = cq.Workplane("XZ").moveTo(-10, 0).lineTo(10, 0)
+show_object(path, name="パス")
 
-# Sweep a circle from diameter 2.0 to diameter 1.0 to diameter 2.0 along X axis length 10.0 + 10.0
+# 直径2.0から直径1.0まで直径2.0の円をX軸に沿って長さ10.0 + 10.0スイープする
 defaultSweep = (
     cq.Workplane("YZ")
     .workplane(offset=-10.0)
@@ -16,7 +17,7 @@ defaultSweep = (
     .sweep(path, multisection=True)
 )
 
-# We can sweep through different shapes
+# 異なる形状でスイープすることもできます
 recttocircleSweep = (
     cq.Workplane("YZ")
     .workplane(offset=-10.0)
@@ -44,16 +45,16 @@ circletorectSweep = (
 )
 
 
-# Placement of the Shape is important otherwise could produce unexpected shape
+# 形状の配置は重要です。予期しない形状が生成される可能性があります
 specialSweep = (
     cq.Workplane("YZ")
-    .circle(1.0)
+    .circle(3.0)
     .workplane(offset=10.0)
     .rect(2.0, 2.0)
     .sweep(path, multisection=True)
 )
 
-# Switch to an arc for the path : line l=5.0 then half circle r=4.0 then line l=5.0
+# パスを円弧に切り替える：線の長さl=5.0、半円の半径r=4.0、線の長さl=5.0
 path = (
     cq.Workplane("XZ")
     .moveTo(-5, 4)
@@ -62,10 +63,10 @@ path = (
     .lineTo(-5, -4)
 )
 
-# Placement of different shapes should follow the path
-# cylinder r=1.5 along first line
-# then sweep along arc from r=1.5 to r=1.0
-# then cylinder r=1.0 along last line
+# 異なる形状の配置はパスに従う必要があります
+# 最初の線に沿って半径1.5の円柱をスイープ
+# 次に半径1.5から半径1.0までの円弧に沿ってスイープ
+# 最後の線に沿って半径1.0の円柱をスイープ
 arcSweep = (
     cq.Workplane("YZ")
     .workplane(offset=-5)
@@ -81,7 +82,7 @@ arcSweep = (
 )
 
 
-# Translate the resulting solids so that they do not overlap and display them left to right
+# 重ならないように結果の固体を移動し、左から右に表示する
 show_object(defaultSweep)
 show_object(circletorectSweep.translate((0, 5, 0)))
 show_object(recttocircleSweep.translate((0, 10, 0)))

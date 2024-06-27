@@ -15,9 +15,9 @@ r = s.lineTo(3.0, 0).lineTo(3.0, 1.0).spline(sPnts, includeCurrent=True).close()
 result = r.extrude(0.5)
 
 # 上面にフィレットが欠けられるか？
-result = result.faces(">Z").fillet(0.05)
+result = result.faces("+Z").fillet(0.05)
 
 # 下面にC面かけられる？
-result = result.faces("<Z").chamfer(0.05)
+result = result.faces("-Z").chamfer(0.05)
 
 show_object(result, name="boxbody", measure_tools=True)

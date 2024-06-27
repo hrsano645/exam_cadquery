@@ -2,10 +2,11 @@ import cadquery as cq
 from ocp_vscode import show_object
 
 # スイープするためのスプラインとポリラインパスに使用するポイント
-pts = [(0, 1), (1, 2), (2, 4), (4, 16)]
+pts = [(0, 1), (1, 2), (2, 4)]
 
 # ポイントのリストから生成されたスプラインパス
-path_default = cq.Workplane("XZ").spline(pts)
+# path_default = cq.Workplane("XZ").spline(pts)
+path_default = cq.Workplane("XZ").spline(pts, includeCurrent=True)
 
 # 直径1.0の円をスプラインパスに沿ってスイープする
 defaultSweep = cq.Workplane("XY").circle(1.0).sweep(path_default)
@@ -31,13 +32,18 @@ path_arc = cq.Workplane("XZ").threePointArc((1.0, 1.5), (0.0, 1.0))
 arcSweep = cq.Workplane("XY").circle(1.0).sweep(path_arc)
 
 # 結果のソリッドを重ならないように変換し、左から右に表示します
-show_object(path_default.translate((0, 0, -1)), name="path_default")
+show_object(path_default.translate((0, 0, 0)), name="path_default")
 show_object(defaultSweep, name="defaultSweep")
-show_object(path_default.translate((5, 0, -1)), name="path_default1")
+show_object(path_default.translate((5, 0, 0)), name="path_default1")
 show_object(frenetShell.translate((5, 0, 0)), name="frenetShell")
-show_object(path_default.translate((10, 0, -1)), name="path_default2")
+show_object(path_default.translate((10, 0, 0)), name="path_default2")
 show_object(defaultRect.translate((10, 0, 0)), name="defaultRect")
 show_object(path_pline.translate((15, 0, 0)), name="path_pline")
 show_object(plineSweep.translate((15, 0, 0)), name="plineSweep")
 show_object(path_arc.translate((20, 0, 0)), name="path_arc")
 show_object(arcSweep.translate((20, 0, 0)), name="arcSweep")
+
+# メモ
+# * スプラインパスはなぜかその線の上を通らない。理由は不明
+# * また、スプラインパスを通るとホースっぽい形状になると思ったけど、なってないので、理由がわからない
+# * 多分最初のポイントから次を通るときのベクトルの問題かもしれない？
