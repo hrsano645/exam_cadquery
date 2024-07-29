@@ -7,7 +7,7 @@ cone_radius = 20  # カラーコーンの底面の半径
 base_height = 5  # 平たい正方立方体の高さ
 base_width = 40  # 平たい正方立方体の幅
 base_margin = 10  # 平たい正方立方体のマージン
-hemisphere_radius = 5  # 頂点の半球の半径
+hemisphere_radius = 2  # 頂点の半球の半径
 
 # 正方立方体のベースを作成
 base = cq.Workplane("XY").box(
@@ -36,3 +36,5 @@ cone_model = base.union(cone).union(hemisphere)
 
 # モデルを表示
 show_object(cone_model)
+
+cq.exporters.export(cone_model, "colorcone.stl")
